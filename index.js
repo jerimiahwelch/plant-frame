@@ -12,9 +12,25 @@ const server = http.createServer((req, res) => {
   if (req.url === '/?led=off') led.write(0);
   res.statusCode = 200;
   res.setHeader('Content-Type', 'text/html');
-  res.write('<h2>A simple LED control server <br>with Onion Omega2+</h2>');
-  res.write('<p>LED state: <a href="?led=on"> <button>ON</button></a>');
-  res.write('  <a href="?led=off"><button>OFF</button></a></p>');
+  
+  res.write(/*html*/`
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LED Demo</title>
+</head>
+<body>
+  <h2>A simple LED control server</h2>
+  <p>LED state: <a href="?led=on"> <button>ON</button></a>
+<a href="?led=off"><button>OFF</button></a></p>
+</body>
+</html>  
+  `)
+  
+  
+    
   res.end();
 });
  
