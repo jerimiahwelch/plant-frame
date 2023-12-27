@@ -1,23 +1,31 @@
 const Gpio = require('onoff').Gpio
-const led = new Gpio(17, 'out')
+const led1 = new Gpio(17, 'out')
 const led2 = new Gpio(27, 'out')
 const led3 = new Gpio(22, 'out')
 
-console.log("LEO's led server");
 
 os = require('os');
 const http = require('http');
 const hostname = os.networkInterfaces()['wlan0'][0].address;
 const port = 3000;
+
+// Turn on LEDs on first boot
+for (const led of [led1, led2, led3]) {
+  led.write(1)
+}
+
 const server = http.createServer((req, res) => {
-  if (req.url === '/?led=on') led.write(1);
-  if (req.url === '/?led=off') led.write(0);
-  
-  if (req.url === '/?led2=on') led2.write(1);
-  if (req.url === '/?led2=off') led2.write(0);
-  
-  if (req.url === '/?led3=on') led3.write(1);
-  if (req.url === '/?led3=off') led3.write(0);
+  console.log(req);
+  const pathsearch = req.url
+    if (pathsearch === '/?led1=on') led1.write(1);
+    if (pathsearch === '/?led1=off') led1.write(0);
+    
+    if (pathsearch === '/?led2=on') led2.write(1);
+    if (pathsearch === '/?led2=off') led2.write(0);
+    
+    if (pathsearch === '/?led3=on') led3.write(1);
+    if (pathsearch === '/?led3=off') led3.write(0);
+
 
   res.statusCode = 200;
   res.setHeader('Content-Type', 'text/html');
@@ -42,8 +50,8 @@ const server = http.createServer((req, res) => {
   <p></p>
   <p>
     LED 1
-    <a href="?led=on"> <button>ON</button></a>
-    <a href="?led=off"><button>OFF</button></a>
+    <a href="?led1=on"> <button>ON</button></a>
+    <a href="?led1=off"><button>OFF</button></a>
   </p>
   <p>
     LED 2
@@ -64,5 +72,5 @@ const server = http.createServer((req, res) => {
  
  
 server.listen(port, hostname, () => {
-  console.log(`Server running at http://${hostname}:${port}/`);
+  console.log(`LEO's led server running at http://${hostname}:${port}/`);
 });
